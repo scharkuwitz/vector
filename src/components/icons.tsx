@@ -24,28 +24,29 @@ function Svg({ size = 14, children, ...rest }: IconProps) {
 }
 
 /**
- * The logo mark: a vector drawn as in a maths textbook. It is a bold arrow
- * from an origin point, with its two components shown faintly. Neutral ink,
- * because blue means priority. The favicon (src/app/icon.svg) is the same
+ * The logo mark: three vectors of different lengths from one origin, in red,
+ * green and blue (the x/y/z axis colors). The logo is the one place outside
+ * the data where these hues appear; they come from the --logo-* tokens so
+ * they adapt to dark mode. The favicon (src/app/icon.svg) is the same
  * drawing on a dark tile.
  */
-export function LogoMark({ size = 20, ...props }: IconProps) {
+export function LogoMark({ size = 22, ...props }: IconProps) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      strokeWidth={2.3}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
       {...props}
     >
-      <path d="M4 20h11M15 20V8" strokeWidth={1.6} opacity={0.45} />
-      <path d="M4 20 18.5 5.5M11.5 5h7.5v7.5" strokeWidth={2.3} />
-      <circle cx="4" cy="20" r="1.9" fill="currentColor" stroke="none" />
+      <path stroke="var(--logo-r)" d="M4 20h17M17.5 16.5 21 20l-3.5 3.5" />
+      <path stroke="var(--logo-g)" d="M4 20 14.5 9.5M9.5 9.5h5v5" />
+      <path stroke="var(--logo-b)" d="M4 20V8M1 11l3-3 3 3" />
     </svg>
   );
 }
