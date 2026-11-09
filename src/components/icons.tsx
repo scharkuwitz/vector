@@ -24,29 +24,24 @@ function Svg({ size = 14, children, ...rest }: IconProps) {
 }
 
 /**
- * The logo mark: three vectors of different lengths from one origin, in red,
- * green and blue (the x/y/z axis colors). The logo is the one place outside
- * the data where these hues appear; they come from the --logo-* tokens so
- * they adapt to dark mode. The favicon (src/app/icon.svg) is the same
- * drawing on a dark tile.
+ * The logo mark: three vectors as 3D axes from one origin, in the x/y/z axis
+ * colors: red (x, to the right), green (y, up, the longest) and blue (z, toward
+ * the viewer, the shortest). It sits on a dark tile, so the colors are fixed
+ * and look the same in light and dark mode. src/app/icon.svg is the same image.
  */
-export function LogoMark({ size = 22, ...props }: IconProps) {
+export function LogoMark({ size = 28, ...props }: IconProps) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      strokeWidth={2.3}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-      {...props}
-    >
-      <path stroke="var(--logo-r)" d="M4 20h17M17.5 16.5 21 20l-3.5 3.5" />
-      <path stroke="var(--logo-g)" d="M4 20 14.5 9.5M9.5 9.5h5v5" />
-      <path stroke="var(--logo-b)" d="M4 20V8M1 11l3-3 3 3" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...props}>
+      <rect x=".5" y=".5" width="23" height="23" rx="5.5" fill="#0b0b0b" stroke="#fff" strokeOpacity=".14" />
+      <g strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="#6aa6ff" strokeWidth="2.4" d="M9.67 15.29 7.16 17.7" />
+        <path fill="#6aa6ff" stroke="#6aa6ff" strokeWidth=".66" d="M4.89 19.87 5.92 15.68 9.12 19.02Z" />
+        <path stroke="#ff6b70" strokeWidth="2.4" d="M9.67 15.29 15.99 16.05" />
+        <path fill="#ff6b70" stroke="#ff6b70" strokeWidth=".66" d="M19.11 16.43 15.22 18.29 15.77 13.69Z" />
+        <path stroke="#3dd68c" strokeWidth="2.4" d="M9.67 15.29V7.27" />
+        <path fill="#3dd68c" stroke="#3dd68c" strokeWidth=".66" d="M9.67 4.13 11.98 7.77H7.35Z" />
+      </g>
+      <circle cx="9.67" cy="15.29" r="1.82" fill="#f0efec" />
     </svg>
   );
 }

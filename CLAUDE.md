@@ -79,7 +79,7 @@ Work happens in scoped "runs". Keep each run to what it covers and don't pull la
   - Progress bars, buttons and links are neutral ink.
   - Status colors (critical = overdue and form errors, warning = weights ≠ 100%) always come with an icon and a word.
   - Hairline borders, a 4px radius, no shadows or gradients.
-  - Logo: `LogoMark` in `icons.tsx` is three vectors of different lengths from one origin, in red, green and blue (`--logo-r/g/b` tokens). The user asked for these colors. The logo is the only exception to "blue means priority", so don't reuse the logo colors in the UI. `src/app/icon.svg` is the same drawing on a dark tile.
+  - Logo: `LogoMark` in `icons.tsx` shows three vectors as 3D axes (red x, green y, blue z, of different lengths) on a dark tile with fixed colors. The user asked for this. The logo is the only exception to "blue means priority", so don't reuse its colors in the UI. `src/app/icon.svg` is the same image.
   - Light and dark mode follow `prefers-color-scheme`.
 - **Git.** Local only, on `main`, one commit per milestone, never pushed.
 

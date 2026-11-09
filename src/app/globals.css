@@ -9,7 +9,6 @@
  *   --critical       overdue, always with an icon and the word
  *   --warning        plan weights not adding up to 100%, with an icon
  *   --scrim          the dimmed backdrop behind a modal dialog
- *   --logo-*         the red/green/blue vectors of the logo mark, nowhere else
  *   everything else  neutral surfaces and inks
  *
  * The priority ramp is an ordinal blue validated for both modes
@@ -32,9 +31,6 @@
   --critical: #c93434;
   --warning: #e09c00;
   --scrim: rgb(11 11 11 / 0.35);
-  --logo-r: #e5484d;
-  --logo-g: #2f9e5b;
-  --logo-b: #3b7fe8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,9 +51,6 @@
     --critical: #e66767;
     --warning: #fab219;
     --scrim: rgb(0 0 0 / 0.6);
-    --logo-r: #ff6b70;
-    --logo-g: #3dd68c;
-    --logo-b: #6aa6ff;
   }
 }
 
