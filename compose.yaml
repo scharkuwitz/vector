@@ -1,0 +1,13 @@
+# docker compose up -d  ->  http://localhost:3000
+services:
+  vector:
+    build: .
+    ports:
+      # Loopback only: a reverse proxy on this host serves it publicly.
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - vector-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  vector-data:

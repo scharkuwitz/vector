@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Only these colors exist: Tailwind's default palette is
+ * switched off below so nothing off-palette can creep in.
+ *
+ * Color meaning:
+ *   blue (--prio-*)  priority, and nothing else (bars, swatches)
+ *   --critical       overdue, always with an icon and the word
+ *   --warning        plan weights not adding up to 100%, with an icon
+ *   --scrim          the dimmed backdrop behind a modal dialog
+ *   everything else  neutral surfaces and inks
+ *
+ * The priority ramp is an ordinal blue validated for both modes
+ * (one hue, monotone lightness, light end >= 2:1 against the surface).
+ */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f2f1ed;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --ink-3: #807e78;
+  --hairline: #e1e0d9;
+  --line: #c3c2b7;
+  --prio-low: #86b6ef;
+  --prio-medium: #2a78d6;
+  --prio-high: #104281;
+  --done: #b5b3ab;
+  --critical: #c93434;
+  --warning: #e09c00;
+  --scrim: rgb(11 11 11 / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --ink-3: #8f8d86;
+    --hairline: #2c2c2a;
+    --line: #42423e;
+    --prio-low: #184f95;
+    --prio-medium: #3987e5;
+    --prio-high: #86b6ef;
+    --done: #55544f;
+    --critical: #e66767;
+    --warning: #fab219;
+    --scrim: rgb(0 0 0 / 0.6);
+  }
+}
+
+@theme {
+  --color-*: initial;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-hairline: var(--hairline);
+  --color-line: var(--line);
+  --color-prio-low: var(--prio-low);
+  --color-prio-medium: var(--prio-medium);
+  --color-prio-high: var(--prio-high);
+  --color-done: var(--done);
+  --color-critical: var(--critical);
+  --color-warning: var(--warning);
+  --color-scrim: var(--scrim);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--page);
+  }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--hairline);
+  }
+}
