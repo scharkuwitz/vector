@@ -23,13 +23,25 @@ function Svg({ size = 14, children, ...rest }: IconProps) {
   );
 }
 
-/** Three stacked bars: the wordmark's mark. */
-export function LogoMark(props: IconProps) {
+/**
+ * The logo mark: three vectors as 3D axes from one origin, in the x/y/z axis
+ * colors: red (x, to the right), green (y, up, the longest) and blue (z, toward
+ * the viewer, the shortest). It sits on a dark tile, so the colors are fixed
+ * and look the same in light and dark mode. src/app/icon.svg is the same image.
+ */
+export function LogoMark({ size = 28, ...props }: IconProps) {
   return (
-    <svg width={18} height={18} viewBox="0 0 18 18" aria-hidden="true" focusable="false" {...props}>
-      <rect x="1" y="2" width="9" height="3.5" rx="1.75" fill="var(--prio-low)" />
-      <rect x="5" y="7.25" width="12" height="3.5" rx="1.75" fill="var(--prio-medium)" />
-      <rect x="3" y="12.5" width="8" height="3.5" rx="1.75" fill="currentColor" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...props}>
+      <rect x=".5" y=".5" width="23" height="23" rx="5.5" fill="#0b0b0b" stroke="#fff" strokeOpacity=".14" />
+      <g strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="#6aa6ff" strokeWidth="2.4" d="M9.67 15.29 7.16 17.7" />
+        <path fill="#6aa6ff" stroke="#6aa6ff" strokeWidth=".66" d="M4.89 19.87 5.92 15.68 9.12 19.02Z" />
+        <path stroke="#ff6b70" strokeWidth="2.4" d="M9.67 15.29 15.99 16.05" />
+        <path fill="#ff6b70" stroke="#ff6b70" strokeWidth=".66" d="M19.11 16.43 15.22 18.29 15.77 13.69Z" />
+        <path stroke="#3dd68c" strokeWidth="2.4" d="M9.67 15.29V7.27" />
+        <path fill="#3dd68c" stroke="#3dd68c" strokeWidth=".66" d="M9.67 4.13 11.98 7.77H7.35Z" />
+      </g>
+      <circle cx="9.67" cy="15.29" r="1.82" fill="#f0efec" />
     </svg>
   );
 }

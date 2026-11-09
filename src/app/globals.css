@@ -74,8 +74,8 @@
   --color-critical: var(--critical);
   --color-warning: var(--warning);
   --color-scrim: var(--scrim);
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, monospace;
 }
 
 @layer base {

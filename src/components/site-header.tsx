@@ -7,12 +7,13 @@ import { btnPrimary } from "./ui";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-surface">
-      <div className="flex h-12 items-center gap-4 px-3 sm:gap-6 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-ink">
+      <div className="flex h-12 items-center gap-3 px-3 sm:gap-6 sm:px-6">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 text-[16px] font-bold tracking-tight text-ink">
           <LogoMark />
-          vector
+          {/* Below 380px only the mark shows, so the nav and "+" still fit. */}
+          <span className="max-[379px]:sr-only">Вектор</span>
         </Link>
-        <nav aria-label="Үндсэн цэс" className="flex items-center gap-3.5 sm:gap-5">
+        <nav aria-label="Үндсэн цэс" className="flex items-center gap-3 sm:gap-5">
           <Suspense fallback={<NavLinksStatic />}>
             <NavLinks />
           </Suspense>
