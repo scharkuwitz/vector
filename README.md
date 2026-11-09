@@ -11,6 +11,7 @@ A lightweight to-do app for long-term plans and the activities that make them up
   - Hovering or focusing a bar shows its details.
   - A line marks today.
   - The chart is also shown on each plan's page.
+- **Light and dark mode:** a switch in the header picks Light, Dark or System (follow the OS). Light mode uses warm gray / beige tones rather than white.
 - **Editing:** create, edit and delete plans and activities. You can change an activity's status straight from the list. Deleting a plan asks first, says how many activities go with it, then deletes them too.
 
 The app starts with an empty database: create a plan, then add activities to it.

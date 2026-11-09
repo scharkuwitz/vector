@@ -13,45 +13,41 @@
  *
  * The priority ramp is an ordinal blue validated for both modes
  * (one hue, monotone lightness, light end >= 2:1 against the surface).
+ *
+ * Theme: each token holds its light and dark value in light-dark(), which
+ * follows the root's color-scheme. With no choice saved, color-scheme is
+ * "light dark" and the OS decides. The header's theme switch sets
+ * data-theme="light" | "dark" on <html> (an inline script in layout.tsx
+ * applies the saved choice before first paint), which pins color-scheme.
+ *
+ * Light mode is deliberately warm gray / beige rather than white, to be
+ * easier on the eyes.
  */
 :root {
-  color-scheme: light;
-  --page: #f9f9f7;
-  --surface: #fcfcfb;
-  --surface-2: #f2f1ed;
-  --ink: #0b0b0b;
-  --ink-2: #52514e;
-  --ink-3: #807e78;
-  --hairline: #e1e0d9;
-  --line: #c3c2b7;
-  --prio-low: #86b6ef;
-  --prio-medium: #2a78d6;
-  --prio-high: #104281;
-  --done: #b5b3ab;
-  --critical: #c93434;
-  --warning: #e09c00;
-  --scrim: rgb(11 11 11 / 0.35);
+  color-scheme: light dark;
+  --page: light-dark(#e8e5de, #0d0d0d);
+  --surface: light-dark(#f0ede6, #1a1a19);
+  --surface-2: light-dark(#e2ded5, #232321);
+  --ink: light-dark(#1d1c1a, #f0efec);
+  --ink-2: light-dark(#4a4843, #c3c2b7);
+  --ink-3: light-dark(#66635c, #8f8d86);
+  --hairline: light-dark(#d5d0c5, #2c2c2a);
+  --line: light-dark(#b8b2a5, #42423e);
+  --prio-low: light-dark(#6f9fe0, #184f95);
+  --prio-medium: light-dark(#2a78d6, #3987e5);
+  --prio-high: light-dark(#104281, #86b6ef);
+  --done: light-dark(#a8a499, #55544f);
+  --critical: light-dark(#b52f2f, #e66767);
+  --warning: light-dark(#d69500, #fab219);
+  --scrim: light-dark(rgb(29 28 26 / 0.35), rgb(0 0 0 / 0.6));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --page: #0d0d0d;
-    --surface: #1a1a19;
-    --surface-2: #232321;
-    --ink: #f0efec;
-    --ink-2: #c3c2b7;
-    --ink-3: #8f8d86;
-    --hairline: #2c2c2a;
-    --line: #42423e;
-    --prio-low: #184f95;
-    --prio-medium: #3987e5;
-    --prio-high: #86b6ef;
-    --done: #55544f;
-    --critical: #e66767;
-    --warning: #fab219;
-    --scrim: rgb(0 0 0 / 0.6);
-  }
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @theme {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 // Inter draws the Mongolian letters Ө ө Ү ү in the same proportions as the
@@ -18,7 +19,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="mn" className={`${inter.variable} antialiased`}>
+    // suppressHydrationWarning: THEME_SCRIPT may add data-theme before hydration.
+    <html lang="mn" className={`${inter.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-dvh flex-col font-sans">
         <SiteHeader />
         <main className="flex-1">{children}</main>
