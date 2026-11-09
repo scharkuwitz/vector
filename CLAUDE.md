@@ -80,7 +80,10 @@ Work happens in scoped "runs". Keep each run to what it covers and don't pull la
   - Status colors (critical = overdue and form errors, warning = weights ≠ 100%) always come with an icon and a word.
   - Hairline borders, a 4px radius, no shadows or gradients.
   - Logo: `LogoMark` in `icons.tsx` shows three vectors as 3D axes (red x, green y, blue z, of different lengths) on a dark tile with fixed colors. The user asked for this. The logo is the only exception to "blue means priority", so don't reuse its colors in the UI. `src/app/icon.svg` is the same image.
-  - Light and dark mode follow `prefers-color-scheme`.
+  - **Themes.** Each token in `globals.css` is written once as `light-dark(<light>, <dark>)` and follows the root's `color-scheme`. Light mode is deliberately warm gray / beige, not white (the user found white too bright), so don't lighten `--page` / `--surface` back toward `#fff`.
+    - The header's `ThemeSwitch` (`src/components/theme-switch.tsx`) offers Цайвар / Бараан / Системийн. On phones it is one button that cycles through them. The choice is saved in `localStorage` (`vector-theme`) and set as `data-theme` on `<html>`. "System" removes the attribute, so `prefers-color-scheme` decides.
+    - `THEME_SCRIPT` (`src/lib/theme.ts`) runs inline in `<head>` and applies the saved choice before first paint. It lives outside the `"use client"` file because a client module's exports reach the server layout as references, not strings.
+    - When changing a light value, re-check contrast: muted text (`--ink-3`) needs 4.5:1 on `--surface-2`, and `--prio-low` needs 2:1 on `--surface`.
 - **Git.** Local only, on `main`, one commit per milestone, never pushed.
 
 ## Checking the UI
