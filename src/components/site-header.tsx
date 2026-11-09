@@ -10,7 +10,7 @@ export function SiteHeader() {
       <div className="flex h-12 items-center gap-4 px-3 sm:gap-6 sm:px-6">
         <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-ink">
           <LogoMark />
-          vector
+          Вектор
         </Link>
         <nav aria-label="Үндсэн цэс" className="flex items-center gap-3.5 sm:gap-5">
           <Suspense fallback={<NavLinksStatic />}>

@@ -23,13 +23,29 @@ function Svg({ size = 14, children, ...rest }: IconProps) {
   );
 }
 
-/** Three stacked bars: the wordmark's mark. */
-export function LogoMark(props: IconProps) {
+/**
+ * The logo mark: a vector drawn as in a maths textbook. It is a bold arrow
+ * from an origin point, with its two components shown faintly. Neutral ink,
+ * because blue means priority. The favicon (src/app/icon.svg) is the same
+ * drawing on a dark tile.
+ */
+export function LogoMark({ size = 20, ...props }: IconProps) {
   return (
-    <svg width={18} height={18} viewBox="0 0 18 18" aria-hidden="true" focusable="false" {...props}>
-      <rect x="1" y="2" width="9" height="3.5" rx="1.75" fill="var(--prio-low)" />
-      <rect x="5" y="7.25" width="12" height="3.5" rx="1.75" fill="var(--prio-medium)" />
-      <rect x="3" y="12.5" width="8" height="3.5" rx="1.75" fill="currentColor" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      {...props}
+    >
+      <path d="M4 20h11M15 20V8" strokeWidth={1.6} opacity={0.45} />
+      <path d="M4 20 18.5 5.5M11.5 5h7.5v7.5" strokeWidth={2.3} />
+      <circle cx="4" cy="20" r="1.9" fill="currentColor" stroke="none" />
     </svg>
   );
 }

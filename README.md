@@ -1,4 +1,4 @@
-# vector
+# vector (Вектор)
 
 A lightweight to-do app for long-term plans and the activities that make them up, with a Gantt chart. The interface is in Mongolian.
 

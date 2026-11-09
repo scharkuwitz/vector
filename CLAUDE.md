@@ -21,6 +21,7 @@ npm run db:migrate   # create/upgrade the database (the app also does this on fi
 
 - Next.js 16.4.5, App Router, `src/`, Turbopack, with **Cache Components and Partial Prefetching on** (`next.config.ts`). Read `node_modules/next/dist/docs/` before using a Next API.
 - React 19.3, TypeScript, Tailwind CSS v4 (CSS-first config in `src/app/globals.css`).
+- Font: Inter via `next/font/google` with `latin`, `cyrillic` and `cyrillic-ext` subsets. Mongolian Ө ө Ү ү live in `cyrillic-ext`, so keep that subset. Don't switch to a font whose Ө/Ү don't match its other Cyrillic letters (Geist's didn't, #1).
 - SQLite through Drizzle ORM + better-sqlite3 (prebuilt binaries; install scripts are denied in `package.json` `allowScripts`), zod for input.
 - Vitest. No component library and no date library.
 
@@ -40,7 +41,7 @@ Work happens in scoped "runs". Keep each run to what it covers and don't pull la
 ## Conventions
 
 - **Language.** All user-facing text is Mongolian (Cyrillic), including validation messages, aria-labels and page titles. Code, comments and docs stay English.
-  - Keep English where Mongolian would sound forced: the "vector" wordmark/logo and "Gantt".
+  - Keep English where Mongolian would sound forced, e.g. "Gantt". The app's displayed name and wordmark are "Вектор". The repo and package stay `vector`.
   - Avoid attaching case suffixes to numbers or variables (they depend on how the number is pronounced). Prefer a "label: value" form, e.g. `Хуваарилагдаагүй: 20%`, `Дууссан: 3`.
   - Glossary: activity = ажил, plan = төлөвлөгөө, priority = ач холбогдол (Бага/Дунд/Өндөр), status = төлөв (Хийх/Хийгдэж буй/Дууссан), weight = эзлэх хувь, overdue = хугацаа хэтэрсэн, progress = явц.
 - **Reads.** Pages read data only through `src/lib/data.ts`, which wraps the queries in `src/db/repo.ts`.
@@ -78,6 +79,7 @@ Work happens in scoped "runs". Keep each run to what it covers and don't pull la
   - Progress bars, buttons and links are neutral ink.
   - Status colors (critical = overdue and form errors, warning = weights ≠ 100%) always come with an icon and a word.
   - Hairline borders, a 4px radius, no shadows or gradients.
+  - Logo: `LogoMark` in `icons.tsx` is a maths-style vector (an arrow from an origin dot, with faint components) in neutral ink. `src/app/icon.svg` is the same drawing on a dark tile.
   - Light and dark mode follow `prefers-color-scheme`.
 - **Git.** Local only, on `main`, one commit per milestone, never pushed.
 
