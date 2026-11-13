@@ -111,3 +111,8 @@ docker compose exec vector node scripts/assign-owner.cjs --email owner@example.c
 ## Browser tests
 
 Run `npx playwright install chromium` once, then `npm run build && npm run test:e2e`. Tests start a production server on port 3100 with their own credentials and temporary database; they never open `data/vector.db`. Screenshots and failure traces are saved under `test-results/`.
+
+## Contributors
+
+- [scharkuwitz](https://github.com/scharkuwitz) — project maintainer.
+- OpenAI Codex — AI assistance with authentication, private account data, migrations, and testing ([PR #6](https://github.com/scharkuwitz/vector/pull/6)).
