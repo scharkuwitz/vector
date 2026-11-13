@@ -4,7 +4,7 @@ import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-cor
 import { PRIORITIES, STATUSES } from "../lib/types";
 
 /*
- * Two tables. A plan's dates, progress and weight total are derived from its
+ * A plan's dates, progress and weight total are derived from its
  * activities when read (src/lib/plan-stats.ts), never stored.
  *
  * Dates are "YYYY-MM-DD" text; timestamps are ISO 8601 UTC text.
@@ -15,15 +15,65 @@ import { PRIORITIES, STATUSES } from "../lib/types";
 
 const now = sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`;
 
+// Better Auth owns password hashing and session lifecycle. Timestamps use
+// milliseconds, matching its Drizzle adapter's Date representation.
+export const user = sqliteTable("user", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: integer("email_verified", { mode: "boolean" }).notNull().default(false),
+  image: text("image"),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+});
+
+export const session = sqliteTable("session", {
+  id: text("id").primaryKey(),
+  token: text("token").notNull().unique(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+}, (t) => [index("session_user_id_idx").on(t.userId)]);
+
+export const account = sqliteTable("account", {
+  id: text("id").primaryKey(),
+  accountId: text("account_id").notNull(),
+  providerId: text("provider_id").notNull(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  accessTokenExpiresAt: integer("access_token_expires_at", { mode: "timestamp_ms" }),
+  refreshTokenExpiresAt: integer("refresh_token_expires_at", { mode: "timestamp_ms" }),
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+}, (t) => [index("account_user_id_idx").on(t.userId)]);
+
+export const verification = sqliteTable("verification", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+}, (t) => [index("verification_identifier_idx").on(t.identifier)]);
+
 export const plans = sqliteTable(
   "plans",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
+    // Nullable only for legacy rows awaiting local owner assignment.
+    userId: text("user_id").references(() => user.id, { onDelete: "restrict" }),
     title: text("title").notNull(),
     description: text("description"),
     createdAt: text("created_at").notNull().default(now),
   },
-  (t) => [check("plans_title_not_blank", sql`length(trim(${t.title})) > 0`)],
+  (t) => [index("plans_user_id_idx").on(t.userId), check("plans_title_not_blank", sql`length(trim(${t.title})) > 0`)],
 );
 
 export const activities = sqliteTable(

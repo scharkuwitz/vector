@@ -104,6 +104,14 @@ export function ArrowLeftIcon(props: IconProps) {
   );
 }
 
+export function LogoutIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 2H2.5v12H6M6 8h8M11 5l3 3-3 3" />
+    </Svg>
+  );
+}
+
 export function SunIcon(props: IconProps) {
   return (
     <Svg {...props}>

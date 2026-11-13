@@ -5,6 +5,9 @@ services:
     ports:
       # Loopback only: a reverse proxy on this host serves it publicly.
       - "127.0.0.1:3000:3000"
+    environment:
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Set BETTER_AUTH_URL in .env}
     volumes:
       - vector-data:/app/data
     restart: unless-stopped
