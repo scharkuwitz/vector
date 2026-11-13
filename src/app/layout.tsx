@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { SiteHeader } from "@/components/site-header";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
@@ -25,8 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body className="flex min-h-dvh flex-col font-sans">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
+        {children}
       </body>
     </html>
   );

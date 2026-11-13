@@ -3,8 +3,7 @@
 #   docker build -t vector .
 #   docker run -d -p 3000:3000 -v vector-data:/app/data --name vector vector
 #
-# The app has no accounts. Put it behind a reverse proxy with HTTPS and a
-# password (see README).
+# Set BETTER_AUTH_SECRET and BETTER_AUTH_URL at runtime; use HTTPS (see README).
 
 FROM node:24-slim AS deps
 WORKDIR /app
