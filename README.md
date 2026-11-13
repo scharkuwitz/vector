@@ -1,18 +1,13 @@
 # vector (Вектор)
 
-A lightweight to-do app for long-term plans and the activities that make them up, with a Gantt chart. The interface is in Mongolian.
+A lightweight to-do app for long-term plans and activities, with a Gantt chart and Mongolian interface.
 
-- **Plans** (төлөвлөгөө): long-term goals. A plan's dates and progress are worked out from its activities.
-- **Activities** (ажил): each one has a title, a description, its plan, a priority (low / medium / high), its weight (the share of the plan it represents, in %), a status (to do / in progress / done), and start and end dates.
-- **Progress:** a plan's progress is the sum of the weights of its done activities. A plan's weights can't add up to more than 100%. A plan whose weights add up to less than 100% is flagged.
-- **Gantt chart:**
-  - Four zoom levels: Day, Week, Month and Quarter.
-  - A "Group by plan" toggle. Each plan gets a summary bar showing its progress, and plans can be collapsed.
-  - Hovering or focusing a bar shows its details.
-  - A line marks today.
-  - The chart is also shown on each plan's page.
-- **Light and dark mode:** a switch in the header picks Light, Dark or System (follow the OS). Light mode uses warm gray / beige tones rather than white.
-- **Editing:** create, edit and delete plans and activities. You can change an activity's status straight from the list. Deleting a plan asks first, says how many activities go with it, then deletes them too.
+- **Plans** (төлөвлөгөө): long-term goals with dates and progress derived from their activities.
+- **Activities** (ажил): title, description, parent plan, priority (low / medium / high), weight (% of the plan), status (to do / in progress / done), and start/end dates.
+- **Progress:** the sum of completed activities' weights. Total weights cannot exceed 100%; plans with lower total weights are flagged.
+- **Gantt chart:** Day, Week, Month and Quarter zoom; optional grouping by plan with progress summary bars and collapsible groups; details on hover or focus; and a today marker. Also shown on each plan's page.
+- **Themes:** Light, Dark or System (follow the OS), selected in the header. Light mode uses warm gray / beige tones.
+- **Editing:** create, edit and delete plans and activities, with status changes directly in the list. Plan deletion asks for confirmation, shows the affected activity count, and deletes those activities too.
 
 Each account has private plans and activities. Register, create a plan, then add activities to it.
 
@@ -28,7 +23,7 @@ cp .env.example .env.local
 npm run dev          # http://localhost:3000
 ```
 
-The database is a single SQLite file, `data/vector.db` by default (set `DATABASE_PATH` to change it). The app creates it and applies the migrations on first use. `npm run db:migrate` does the same from the command line.
+SQLite uses `data/vector.db` by default; override it with `DATABASE_PATH`. The app creates the database and applies migrations on first use, or manually with `npm run db:migrate`.
 
 | Script | What it does |
 |---|---|
@@ -36,20 +31,20 @@ The database is a single SQLite file, `data/vector.db` by default (set `DATABASE
 | `npm run build` / `npm run start` | Production build and server |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | Generates route types, then runs `tsc` |
-| `npm test` | Unit and integration tests, including authentication and the database layer on an in-memory SQLite |
-| `npm run test:e2e` | Browser tests against a production build, using a disposable SQLite database |
-| `npm run db:generate` | Writes a new migration to `drizzle/` after a change to `src/db/schema.ts` |
+| `npm test` | Unit/integration tests, including authentication and database tests with in-memory SQLite |
+| `npm run test:e2e` | Browser tests against a production build with disposable SQLite |
+| `npm run db:generate` | Generates a migration in `drizzle/` from changes to `src/db/schema.ts` |
 | `npm run db:migrate` | Creates the database if needed and applies pending migrations |
 | `npm run db:assign-owner -- --email owner@example.com` | Locally assigns legacy plans to a registered account |
 
 ## Pages
 
-| URL | |
+| URL | Page |
 |---|---|
 | `/login`, `/signup` | Email/password login and registration |
-| `/` | Activities: the to-do list, with plan, priority and status filters and a status switch on each row |
-| `/plans`, `/plans/[id]` | Plans with progress. A plan's page shows its timeline and activities |
-| `/gantt` | The Gantt chart. `?zoom=day\|week\|month\|quarter` and `?group=plan` are kept in the URL |
+| `/` | Activities with plan, priority and status filters, and per-row status switches |
+| `/plans`, `/plans/[id]` | Plans with progress; individual plans include their timeline and activities |
+| `/gantt` | Gantt chart; URL retains `?zoom=day\|week\|month\|quarter` and `?group=plan` |
 | `/activities/new`, `/activities/[id]/edit`, `/plans/new`, `/plans/[id]/edit` | Forms |
 
 ## Layout of the code
@@ -71,9 +66,9 @@ drizzle/                 committed migrations
 
 ## Deploying
 
-The app supports multiple private accounts on one server: a single container holding the database file. Authentication uses Better Auth with email/password and database-backed sessions. Sessions expire after seven days; logging out revokes the current session. Email verification, password recovery, and social login are not included.
+Deploy as one server/container with a SQLite file and multiple private accounts. Better Auth provides email/password authentication and database-backed sessions, which expire after seven days or are revoked on logout. Email verification, password recovery, and social login are not included.
 
-Before deploying, create a `.env` file with `BETTER_AUTH_SECRET` (generate with `openssl rand -hex 32`) and `BETTER_AUTH_URL=https://your-vector-domain.example`. The secret must remain stable across restarts. For local development, `.env.local` works with Next.js; Compose reads `.env`. `DATABASE_PATH` remains optional and defaults to `data/vector.db` outside Docker.
+Create `.env` with `BETTER_AUTH_SECRET` (generate with `openssl rand -hex 32`) and `BETTER_AUTH_URL=https://your-vector-domain.example`. Keep the secret stable across restarts. Next.js also reads `.env.local`; Compose reads `.env`. `DATABASE_PATH` is optional, defaulting to `data/vector.db` outside Docker.
 
 ```bash
 docker compose up -d          # builds the image, serves on 127.0.0.1:3000
@@ -86,23 +81,23 @@ docker build -t vector .
 docker run -d -p 127.0.0.1:3000:3000 --env-file .env -v vector-data:/app/data --name vector vector
 ```
 
-- The database lives in the `vector-data` volume at `/app/data/vector.db`. The image runs as the unprivileged `node` user.
-- **HTTPS:** put the server behind Caddy or nginx with HTTPS. `BETTER_AUTH_URL` must match the public origin; HTTPS enables secure session cookies. Configure the proxy to overwrite `X-Forwarded-For` with the real client IP, rather than trusting a client-supplied value, so authentication rate limiting uses the correct address. Login and signup allow five attempts per minute per IP; limits are held in memory for this single-server deployment.
-- **Accounts:** registration is public. All application pages, data reads, and mutations require a valid session. Each account can access only its own plans and activities.
-- **Backups:** the database runs in WAL mode, so don't copy the file while the app is running. Either stop the container first, or use `sqlite3 /path/to/vector.db ".backup backup.db"`.
-- Without Docker: run `npm run build`, then copy `.next/static` into `.next/standalone/.next/` and `drizzle/` into `.next/standalone/`, and run `node .next/standalone/server.js` with `DATABASE_PATH` set.
+- **Storage:** `/app/data/vector.db` in the `vector-data` volume. The image runs as the unprivileged `node` user.
+- **HTTPS:** use Caddy or nginx, with `BETTER_AUTH_URL` matching the public origin to enable secure cookies. Have the proxy overwrite `X-Forwarded-For` with the real client IP. Login/signup limits are five attempts per minute per IP, stored in server memory.
+- **Accounts:** public registration; all application pages, reads, and mutations require a valid session and access only the account's own plans and activities.
+- **Backups:** SQLite uses WAL mode. Stop the container before copying the database, or use `sqlite3 /path/to/vector.db ".backup backup.db"` while running.
+- **Without Docker:** run `npm run build`, copy `.next/static` into `.next/standalone/.next/` and `drizzle/` into `.next/standalone/`, then run `node .next/standalone/server.js` with `DATABASE_PATH` set.
 
 ## Assigning data created before authentication
 
-Existing plans and their activities are preserved by the migration but stay hidden until locally assigned. Public registration never claims legacy data. Register the intended owner, confirm that account is yours, then run on the server:
+The migration preserves existing plans and activities, hidden until locally assigned. Public registration never claims them. Register the intended owner, confirm the account is yours, then run on the server:
 
 ```bash
 npm run db:assign-owner -- --email owner@example.com
 ```
 
-The command uses `DATABASE_PATH` from the shell, or the default `data/vector.db`; it does not load Next.js env files. It fails if the email is not registered. It assigns only unowned plans in one transaction and can be rerun without moving anyone else's data. Back up the database before deploying the migration.
+The command reads `DATABASE_PATH` from the shell (default `data/vector.db`), not Next.js env files. It requires a registered email and assigns only unowned plans in one transaction; reruns preserve existing ownership. Back up the database before deploying the migration.
 
-For Docker Compose, the production image includes a bundled administration script:
+The production image includes the same command as a bundled script:
 
 ```bash
 docker compose exec vector node scripts/assign-owner.cjs --email owner@example.com
@@ -110,9 +105,4 @@ docker compose exec vector node scripts/assign-owner.cjs --email owner@example.c
 
 ## Browser tests
 
-Run `npx playwright install chromium` once, then `npm run build && npm run test:e2e`. Tests start a production server on port 3100 with their own credentials and temporary database; they never open `data/vector.db`. Screenshots and failure traces are saved under `test-results/`.
-
-## Contributors
-
-- [scharkuwitz](https://github.com/scharkuwitz) — project maintainer.
-- OpenAI Codex — AI assistance with authentication, private account data, migrations, and testing ([PR #6](https://github.com/scharkuwitz/vector/pull/6)).
+Run `npx playwright install chromium` once, then `npm run build && npm run test:e2e`. Tests start a production server on port 3100 with their own credentials and temporary database; `data/vector.db` is untouched. Screenshots and failure traces go in `test-results/`.
